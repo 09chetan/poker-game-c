@@ -1,18 +1,149 @@
-Readme.txt
-Poker game
+Poker AI Project (Development Version)
+Overview
 
-A five-card draw poker game written in C. One human player and 3 AI opponents.
-AI programmed using Monte Carlo simulation technique. 
+This project implements a Five Card Draw Poker Game in C where one human player competes against AI players. The goal of the project is to build an intelligent poker agent that can make optimal decisions using Monte Carlo Simulation.
 
-===========================
-Build:
-===========================
-In Terminal:
+The current version represents the development phase of the project, where the core game engine has been implemented and the AI advisor module is under development.
 
-make clean
-make
+Current Development Status
 
-OR
+This repository currently contains Phase 1 of the project.
+
+Completed (Phase 1 – Game Engine)
+
+The following components are fully implemented:
+
+Card data structure
+
+Deck generation and shuffling
+
+Hand management
+
+Player management
+
+Betting system
+
+Two round poker gameplay
+
+Hand ranking evaluation
+
+Game loop and showdown logic
+
+These modules together form the complete poker game engine.
+
+In Progress (Phase 2 – AI Decision System)
+
+The AI Advisor module is currently under development.
+
+Planned AI features:
+
+Monte Carlo simulation for decision making
+
+Expected value calculation for poker hands
+
+AI discard strategy optimization
+
+AI betting behavior based on probability
+
+Currently the program displays:
+
+AI Advisor in Progress
+Monte Carlo simulation module under development
+
+This indicates where the AI decision logic will be integrated.
+
+Game Rules
+
+The implemented poker game follows Five Card Draw Poker rules.
+
+Players
+
+1 Human Player
+
+3 AI Players
+
+Each player starts with $100 chips.
+
+Game Flow
+
+Each set consists of two betting rounds.
+
+Cards are dealt to all players (5 cards each).
+
+First betting round begins.
+
+Players may discard and draw new cards.
+
+Second betting round occurs.
+
+Remaining players reveal their hands.
+
+The player with the highest ranked hand wins the pool.
+
+The game continues until only one player has money remaining.
+
+Poker Hand Ranking
+
+Hands are ranked as follows (strongest to weakest):
+
+Straight Flush
+
+Four of a Kind
+
+Full House
+
+Flush
+
+Straight
+
+Three of a Kind
+
+Two Pair
+
+Pair
+
+High Card
+
+The program evaluates hand strength automatically.
+
+Project Structure
+Poker-game/
+│
+├── card.c
+├── deck.c
+├── hand.c
+├── player.c
+├── mcadvisor.c
+├── pokergame.c
+├── pokergame.h
+├── Makefile
+└── README.md
+File Description
+
+card.c
+Handles card structure and card related functions.
+
+deck.c
+Implements deck initialization, shuffling and card drawing.
+
+hand.c
+Manages player hands and evaluates hand rankings.
+
+player.c
+Defines player structure and player actions.
+
+mcadvisor.c
+Contains the AI advisor logic (currently under development).
+
+pokergame.c
+Main game loop and gameplay implementation.
+
+pokergame.h
+Header file containing structures, constants and function prototypes.
+
+Compilation
+
+Compile the program using GCC.
 
 gcc -Wall -c card.c -I.
 gcc -Wall -c deck.c -I.
@@ -21,72 +152,34 @@ gcc -Wall -c player.c -I.
 gcc -Wall -c mcadvisor.c -I.
 gcc -Wall -c pokergame.c -I.
 gcc -Wall -o pokergame pokergame.o card.o deck.o hand.o player.o mcadvisor.o
+Running the Program
 
-===========================
-Functionality:
-===========================
-Run the simulation using the following command line input:
-./pokergame 1000
-The number 1000 can be varied. It is an argument containing the number of simulations to run per discard option. 
-So inputting 1000 will run 32,000 simulations per hand, which takes about 4.6 seconds on a Macbook Air. 
-I have found I can get correct Monte Carlo logic even at 200 simulations and the game runs significantly faster (<1 sec response time)
+Run the game using:
 
-===========================
-Rules:
-===========================
-(A) 2 rounds of betting per set. Bets go into the 'pool'.
-(B) Every player must call at least the highest bet in round 1 in order to remain in the game. They don't have to call the highest bet in round 2.
-(C) In each round, every player may discard and draw up to 5 cards from the deck.
-(D) A player may also choose to fold at any time, during their turn but forfeits any bets they already made.
-(E) Player with the highest set of cards at the end of 2 rounds wins all the money in the pool.
-(F) If all players except one folds, the remaining player wins the pool, and does not need to show their hand.
-(G) The game continues in sets of 2 rounds until all players except one is bankrupt.
+./pokergame 200
 
-===========================
-Shortcomings:
-===========================
+The number represents the number of simulations per discard option (to be used once Monte Carlo AI is implemented).
 
---If a player doesn't have enough money to call a bet, I haven't implemented functionality for the player to go 'all-in'.
-Implementing the 'all-in' feature will also need to split the pool of money and create side-bets.
---Also, since rare, I haven't implemented tie breaking. In the event of a tie, the winner will be the first player in order that has the tying hand.
-Implementing tie-breaking requires introducing some logic to split the pool winnings.
+Future Work
 
---If the human player puts in a low bet in round 1, but then bluffs in round 2 by putting in an extraordinarily high bet, all the computer players will likely fold.
-In this way, the human player can typically win all the bets the computer players made in round 1. This is because the computer players only bet on a scale linked to the expected value of their cards. The computer bets high when it has good cards, and low when it has bad cards. There isn't any mechanism for the computer to guess if someone is bluffing.
- 
-Since the betting features are independent of the project grade, I didn't go into these additional features.
+The following features will be added in the final phase:
 
-===========================
-Documentation:
-===========================
---deck.c contains the Deck struct. This struct contains 52 consecutive in-memory pointers to Card structs. 
-We can iterate through all 52 cards in the deck by iterating over the 52 pointers to Card structs.
-The Deck struct has one integer that gives the index of the first pointer (out of 52 pointers) that is at the "top" of the deck. 
-To dequeue a card, call dequeue_card, which saves the top card of the deck into one of the provided arguments. 
-Then the integer will be incremented to point to the next card in the deck, which becomes the new 'top' card.
-To enqueue all the cards back into the deck, we simply assign the integer the index of the first pointer.  
+Full Monte Carlo AI implementation
 
---hand.c contains the Hand struct. This struct contains 5 consecutive in-memory pointers to Card structs. 
-We can iterate through all 5 cards in the hand by iterating over the pointers to Card structs.
-There are functions to add cards, replace cards, and sort the hand.
-This struct also contains a function to get the value of the hand, which is used by the Monte Carlo advisor.
+AI probability based betting
 
---card.c contains the Card struct. This struct simply contains the data for the suit and rank of the card. 
-Also there are some functions to print the card and compare the card to other cards.
+Improved discard strategy
 
---player.c contains a wrapper around the Hand struct. The Player struct contains one pointer to a Hand struct, and some additional information about the player such as their name, money they have, whether the player folded, and what they have bet into the pool in the current round.
+Bluff detection mechanisms
 
---mcadvisor.c contains the logic of the Monte Carlo advisor. Only the first function (called mc) is public. The other two functions are private functions to be used by the mc function.More description on this is in the mcadvisor.c file.
+Game performance optimization
 
---pokergame.c contains the game loop for the program. 
+Academic Context
 
---pokergame.h contains the function prototypes, #include, and #define for all files
+This project is developed as part of the Artificial Intelligence coursework. The objective is to apply probabilistic simulation techniques to decision making in imperfect information games such as poker.
 
+Author
 
- 
-
-
-
-
-
-
+Chetan Channa
+BTech AI & Data Science
+VIT Pune
